@@ -2,7 +2,7 @@ function [ ll ] = particle_filter_storeall( nparticles,theta,observations, rando
  datalength = size(observations,1);
  A = createA(theta,dimensional);
 %  init particles
- xparticles = randomness;
+ xparticles = randomness(1,:);
  normweights = 1/ nparticles * ones(1,nparticles);
  ll = 0;
  R = eye(dimensional);
@@ -13,12 +13,13 @@ function [ ll ] = particle_filter_storeall( nparticles,theta,observations, rando
         ancestors = stratified_resampling(normweights,nparticles);
         xparticles = xparticles(:,ancestors);
 %         prediction
-        xparticles = ar_transition(xparticles,A,randomness);
+        xparticles = ar_transition(xparticles,A,randomness(t+1,:));
 %         compute log likelihood
-        logw = ar_loglikelihood( xparticles,observations(t,:),R );
-        maxlw = max(logw);
-        w = exp(logw - maxlw);
-        ll = ll + maxlw +  log(mean(w));
+        logw = ar_loglikelihood( xparticles,observations(t,:)',R );
+%         maxlw = max(logw);
+         
+        w = exp(logw);
+        ll = ll  +  log(mean(w));
         normweights = w / sum(w);
     end
 end

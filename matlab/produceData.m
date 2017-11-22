@@ -2,6 +2,7 @@ clear
 close all
 clc
 dbstop if error
+rand('seed',777)
 dimension = 1;
 alpha_star = 0.95;
 A_star = createA(alpha_star,dimension);
@@ -25,7 +26,10 @@ for i = 1 : nrep
     count = 1;
     for irho = rhos
         theta = irho;
-        randomness =   gen_gms(1,zeros(dimension,1),eye(dimension),nparticles);
+        for t = 1 : datalength+1
+            randomness(t,:) =   gen_gms(1,zeros(dimension,1),eye(dimension),nparticles);
+        end
+        
         ll = particle_filter_storeall(nparticles,theta,observations,randomness,dimension);
         pfll(i,count) = ll;
         count = count + 1;
@@ -37,7 +41,10 @@ end
 
 for i = 1 : nrep
     count = 1;
-    randomness =   gen_gms(1,zeros(dimension,1),eye(dimension),nparticles); 
+    for t = 1 : datalength+1
+            randomness(t,:) =   gen_gms(1,zeros(dimension,1),eye(dimension),nparticles);
+    end
+%     randomness =   gen_gms(1,zeros(dimension,1),eye(dimension),nparticles); 
     for irho = rhos
         theta = irho;
         ll = particle_filter_storeall(nparticles,theta,observations,randomness,dimension);
@@ -67,7 +74,7 @@ hold on
 for i = 1 : nrep
     plot(pfll(i,:));
 end
-plot(kfll)
+% plot(kfll)
 
 
 figure
@@ -75,7 +82,7 @@ hold on
 for i = 1 : nrep
     plot(common_pfll(i,:));
 end
-plot(kfll)
+% plot(kfll)
 
 
 % figure

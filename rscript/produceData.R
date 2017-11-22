@@ -1,13 +1,16 @@
 rm(list = ls())
 setwd("~/GitHub/CoupledPF/rscript/")
+# load package
 library(CoupledPF)
 library(doRNG)
-ncores <- 10
+library(ggthemes)
+ncores <- 8
 registerDoMC(cores = ncores)
+# load custom theme for the plots
 setmytheme()
-set.seed(777)
-
-dimension <- 1
+# fix the random seed
+set.seed(17)
+dimension <- 5
 ar1 <- get_ar(dimension)
 alpha_star <- 0.95
 A_star <- create_A(alpha_star,dimension)
@@ -19,4 +22,5 @@ for (time in 1:datalength) {
   observations[time,] <- x_t + fast_rmvnorm(1,rep(0,dimension), diag(1,nrow = dimension,ncol = dimension))
 }
 
-save(observations,alpha_star,datalength,file='ar1data.Rdata')
+save(observations,alpha_star,datalength,file='ar5data.Rdata')
+
