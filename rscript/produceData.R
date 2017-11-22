@@ -1,4 +1,5 @@
 rm(list = ls())
+setwd("~/GitHub/CoupledPF/rscript/")
 library(CoupledPF)
 library(doRNG)
 ncores <- 10

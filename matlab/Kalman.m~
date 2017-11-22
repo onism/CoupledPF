@@ -1,0 +1,29 @@
+function [ ll ] = Kalman(observations,A,dimension )
+ ll = 0;
+%  initization
+  m = ones(1,dimension);
+  P = eye(dimension);
+  H = ones(dimension,dimension);
+  
+  for t = 1 : size(observations,1)
+      m_ = A * m;
+      P_ = Q+A*P*A';
+      mu = H*m;
+mu = H*m;
+S  = R+H*P*H'; Vs= chol(S); det_S= prod(diag(Vs))^2; inv_sqrt_S= inv(Vs); iS= inv_sqrt_S*inv_sqrt_S';
+K  = P*H'*iS; % ?
+K  = P*H'/S;
+
+qz_temp = exp(-0.5*size(z,1)*log(2*pi) - 0.5*log(det_S) - 0.5*dot(z-repmat(mu,[1 size(z,2)]),iS*(z-repmat(mu,[1 size(z,2)]))))';
+m_temp = repmat(m,[1 size(z,2)]) + K*(z-repmat(mu,[1 size(z,2)]));
+P_temp = (eye(size(P))-K*H)*P;
+
+      
+      eta = observations(t,:) - H * m_;
+      
+      
+
+  end
+  
+end
+
